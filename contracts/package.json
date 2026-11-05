@@ -1,0 +1,1 @@
+{ "name": "bcid-contracts", "private": true, "scripts": { "compile": "node compile.js" }, "dependencies": { "solc": "0.8.19" } }
