@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: chainid-blockchain-identity
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: gunicorn --chdir backend "app:create_app()" --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: LEDGER
+        value: local
