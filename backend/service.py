@@ -11,8 +11,10 @@ import merkle
 from ledger import LedgerError
 
 KEY_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_ ]{0,39}$")
+IMAGE_DATA_RE = re.compile(r"^data:image/(?:png|jpeg|jpg|webp|gif);base64,[A-Za-z0-9+/=\s]+$")
 MAX_ATTRIBUTES = 20
-MAX_VALUE_LEN = 200
+MAX_VALUE_LEN = 500
+MAX_IMAGE_LEN = 300_000
 CHALLENGE_TTL = 600  # seconds
 
 
@@ -69,8 +71,12 @@ class IdentityService:
         clean = {}
         for k, v in attributes.items():
             k, v = str(k).strip(), str(v).strip()
-            if not KEY_RE.match(k) or not v or len(v) > MAX_VALUE_LEN or "|" in k + v:
-                raise ServiceError(f"Invalid attribute '{k}'. Names are plain text, values 1-{MAX_VALUE_LEN} chars, no '|'.")
+            is_img = v.startswith("data:image/")
+            max_len = MAX_IMAGE_LEN if is_img else MAX_VALUE_LEN
+            if not KEY_RE.match(k) or not v or len(v) > max_len or "|" in k + v:
+                raise ServiceError(f"Invalid attribute '{k}'. Names are plain text, values 1-{MAX_VALUE_LEN} chars (or valid image), no '|'.")
+            if is_img and not IMAGE_DATA_RE.match(v):
+                raise ServiceError(f"Invalid image format for '{k}'. Expected a base64 PNG, JPEG, WebP, or GIF image.")
             clean[k] = v
 
         keys = sorted(clean)

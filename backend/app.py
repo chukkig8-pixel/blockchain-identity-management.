@@ -15,7 +15,7 @@ DIST = BASE.parent / "frontend" / "dist"
 
 def create_app(ledger=None, data_dir=None):
     app = Flask(__name__, static_folder=None)
-    app.config["MAX_CONTENT_LENGTH"] = 128 * 1024
+    app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024
     CORS(app, origins=[o for o in os.environ.get("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",") if o])
 
     data_dir = Path(data_dir or DATA_DIR)
@@ -101,6 +101,12 @@ def create_app(ledger=None, data_dir=None):
         svc.ledger.path.unlink(missing_ok=True)
         svc.ledger.__init__(svc.ledger.path)
         return jsonify({"ok": True})
+
+    SPM_SITE = BASE.parent / "spm-website"
+
+    @app.get("/spm")
+    def spm_portal():
+        return send_from_directory(SPM_SITE, "index.html")
 
     # Serve the built React app when present (single-process deployment)
     @app.get("/", defaults={"path": ""})

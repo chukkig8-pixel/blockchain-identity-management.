@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPM Project (15 Marks) — ChainID | Chukki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #F6F5F0;
+      --card: #FFFFFF;
+      --soft: #EFECE6;
+      --ink: #141413;
+      --muted: #66645E;
+      --line: #DFDCD2;
+      --accent: #FF4F18;
+      --accent-bg: #FFF1EC;
+      --navy: #1B365D;
+      --navy-bg: #EEF3FA;
+      --green: #0E8358;
+      --green-bg: #E8F7F0;
+      --amber: #B86B00;
+      --amber-bg: #FFF6E5;
+      --sans: "Plus Jakarta Sans", system-ui, sans-serif;
+      --mono: "JetBrains Mono", monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* Simple Top Header */
+    .header {
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .uni-pill {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+    }
+    .title-group h1 {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+    .title-group p {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .demo-btn {
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 8px 14px;
+      border-radius: 8px;
+    }
+
+    /* Main Container */
+    .wrap {
+      max-width: 1120px;
+      margin: 22px auto 60px;
+      padding: 0 24px;
+    }
+
+    /* Step Tabs (Only 1 View at a Time!) */
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+    .tab-btn {
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 12px;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+      transition: all 0.15s;
+    }
+    .tab-btn:hover { border-color: var(--ink); }
+    .tab-btn.active {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+    .tab-btn small {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      opacity: 0.7;
+      margin-bottom: 2px;
+    }
+    .tab-btn strong {
+      font-size: 0.84rem;
+      display: block;
+    }
+
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* Simple Cards & Grids */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+    h2 { font-size: 1.25rem; font-weight: 800; margin-bottom: 4px; }
+    h3 { font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+    .sub { color: var(--muted); font-size: 0.86rem; margin-bottom: 14px; }
+
+    /* Stat Boxes */
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .stat span {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 600;
+      display: block;
+    }
+    .stat strong {
+      font-family: var(--mono);
+      font-size: 1.55rem;
+      display: block;
+      margin: 4px 0 2px;
+    }
+    .stat small { font-size: 0.76rem; color: var(--muted); }
+    .stat.good strong { color: var(--green); }
+    .stat.accent strong { color: var(--accent); }
+
+    /* Badges */
+    .tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: var(--soft);
+    }
+    .tag.good { background: var(--green-bg); color: var(--green); }
+    .tag.warn { background: var(--amber-bg); color: var(--amber); }
+    .tag.accent { background: var(--accent-bg); color: var(--accent); }
+    .tag.navy { background: var(--navy-bg); color: var(--navy); }
+
+    /* Short Bullet List */
+    .list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .list li {
+      background: var(--bg);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .list li i {
+      font-style: normal;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .list.good li i { color: var(--green); }
+
+    /* Network Diagram Flow */
+    .net-flow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 8px 2px;
+    }
+    .net-col { display: flex; flex-direction: column; gap: 8px; }
+    .node {
+      background: var(--bg);
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      min-width: 132px;
+    }
+    .node.crit {
+      border-color: var(--accent);
+      background: var(--accent-bg);
+    }
+    .node-top {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .node:not(.crit) .node-top { color: var(--navy); }
+    .node b { font-size: 0.82rem; display: block; margin: 3px 0; }
+    .node small { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+    .arrow { font-weight: 800; color: var(--muted); }
+
+    /* Simple Table */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    th, td {
+      padding: 9px 11px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+    th {
+      background: var(--soft);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--muted);
+    }
+    tfoot th {
+      background: var(--navy-bg);
+      color: var(--navy);
+      font-size: 0.84rem;
+    }
+
+    /* Pill Selector Buttons */
+    .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .pill-btn {
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      cursor: pointer;
+    }
+    .pill-btn.active {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+
+    /* Footer Nav Buttons */
+    .step-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+    .nav-btn {
+      font: inherit;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      cursor: pointer;
+    }
+    .nav-btn.next {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    @media (max-width: 860px) {
+      .tabs { grid-template-columns: repeat(3, 1fr); }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Clean Top Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="title-group">
+        <span class="uni-pill">CHANAKYA UNIVERSITY</span>
+        <div>
+          <h1>SPM SA Assignment (15 Marks) — ChainID</h1>
+          <p>Submitted by <b>Chukki</b> (CU23BCA0019A) · 7th Sem BCA · Built Solo in 1 Month (28 Days)</p>
+        </div>
+      </div>
+      <a href="http://127.0.0.1:5000" target="_blank" class="demo-btn">Open ChainID Blockchain App ↗</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- 6 Simple Slide Tabs -->
+    <nav class="tabs" aria-label="SPM Modules">
+      <button class="tab-btn active" onclick="goTab(0)">
+        <small>01 · CHARTER</small>
+        <strong>Scope & Overview</strong>
+      </button>
+      <button class="tab-btn" onclick="goTab(1)">
+        <small>02 · TEAM & CPM</small>
+        <strong>Network Diagram</strong>
+      </button>
+      <button class="tab-btn" onclick="goTab(2)">
+        <small>03 · SCHEDULE & COST</small>
+        <strong>Plan vs Actual & EVM</strong>
+      </button>
+      <button class="tab-btn" onclick="goTab(3)">
+        <small>04 · RISKS</small>
+        <strong>Risks & Benefits</strong>
+      </button>
+      <button class="tab-btn" onclick="goTab(4)">
+        <small>05 · QUALITY</small>
+        <strong>Defects & Tests</strong>
+      </button>
+      <button class="tab-btn" onclick="goTab(5)">
+        <small>06 · CLOSURE</small>
+        <strong>Weekly Review & End</strong>
+      </button>
+    </nav>
+
+    <!-- =================================================================== -->
+    <!-- TAB 1: CHARTER, SCOPE & SUMMARY                                     -->
+    <!-- =================================================================== -->
+    <section class="view active" id="view-0">
+      <div class="grid-4" style="margin-bottom: 16px;">
+        <div class="stat">
+          <span>Project Duration</span>
+          <strong>28 Days</strong>
+          <small>1 Month (4 Weeks)</small>
+        </div>
+        <div class="stat">
+          <span>Effort (Plan vs Actual)</span>
+          <strong>26 → 28 PD</strong>
+          <small>208 hrs → 224 hrs</small>
+        </div>
+        <div class="stat good">
+          <span>Schedule (SV & SPI)</span>
+          <strong>SPI = 1.00</strong>
+          <small>SV = 0 Days (On Time)</small>
+        </div>
+        <div class="stat accent">
+          <span>Cost (28 Person-Days)</span>
+          <strong>₹42,000</strong>
+          <small>@ ₹1,500 / Person-Day</small>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <span class="tag navy" style="margin-bottom:8px;">Project Charter</span>
+          <h3>What the Project Is</h3>
+          <ul class="list">
+            <li><i>1</i><span><b>Goal:</b> Prove one fact (e.g., <code>BCA Cyber Security</code> + <code>Student Photo</code>) without sharing the full transcript.</span></li>
+            <li><i>2</i><span><b>Privacy:</b> Only the 32-byte Merkle root fingerprint goes on the blockchain—zero personal data on-chain.</span></li>
+            <li><i>3</i><span><b>AI Apps Used:</b> Course AI tools used for Charter, Schedule, Cost & Risk scoring.</span></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="tag good" style="margin-bottom:8px;">In-Scope (Built in 1 Month)</span>
+          <h3>Delivered by Chukki (Solo)</h3>
+          <ul class="list good">
+            <li><i>✓</i><span><b>University Tab:</b> Issue signed degrees + Student Photo (Browse, Drag-Drop, Paste).</span></li>
+            <li><i>✓</i><span><b>Student Wallet:</b> Browser P-256 private key + selective proof builder.</span></li>
+            <li><i>✓</i><span><b>Employer & Ledger:</b> 6-check verifier + Solidity & Local blockchain.</span></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="tag accent" style="margin-bottom:8px;">Taking It Ahead in Real Life</span>
+          <h3>Production Rollout Plan</h3>
+          <ul class="list">
+            <li><i>→</i><span><b>University ERP Sync:</b> Batch-issue 1,000+ degrees from Registrar CSV exports.</span></li>
+            <li><i>→</i><span><b>Polygon L2 Mainnet:</b> Anchor roots on Polygon PoS (&lt; ₹0.05 per degree).</span></li>
+            <li><i>→</i><span><b>QR Verifier App:</b> Instant 2-second scan for corporate HR teams.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <span></span>
+        <button class="nav-btn next" onclick="goTab(1)">Next: 2. Team & Network Diagram →</button>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 2: TEAM BUILDING & NETWORK DIAGRAM (DAYS / HOURS)               -->
+    <!-- =================================================================== -->
+    <section class="view" id="view-1">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <div>
+            <h2>Network Diagram (Efforts in Days & Hours)</h2>
+            <p class="sub" style="margin-bottom:6px;">Critical Path (orange) = <b>28 Days (224 Hours)</b>. Task Dependencies: Finish-to-Start (FS) + Fast-Tracked Parallel UI (D ∥ E).</p>
+          </div>
+          <span class="tag accent">Critical Path: A → B → C → D → F → G → H</span>
+        </div>
+
+        <div class="net-flow">
+          <div class="node crit">
+            <div class="node-top"><span>Task A</span><span>3d · 24h</span></div>
+            <b>Charter & Design</b>
+            <small>Start → Day 3</small>
+          </div>
+          <span class="arrow">→</span>
+          <div class="node crit">
+            <div class="node-top"><span>Task B</span><span>4d · 32h</span></div>
+            <b>Merkle Tree Core</b>
+            <small>Pred: A (FS)</small>
+          </div>
+          <span class="arrow">→</span>
+          <div class="node crit">
+            <div class="node-top"><span>Task C</span><span>5d · 36h</span></div>
+            <b>ECDSA P-256 Keys</b>
+            <small>Pred: B (+1d slip)</small>
+          </div>
+          <span class="arrow">→</span>
+          <div class="net-col">
+            <div class="node crit">
+              <div class="node-top"><span>Task D</span><span>5d · 32h</span></div>
+              <b>Solidity & Ledger</b>
+              <small>Pred: C (Critical)</small>
+            </div>
+            <div class="node">
+              <div class="node-top"><span>Task E</span><span>4d · 24h</span></div>
+              <b>React 4-Tab UI</b>
+              <small>Fast-Tracked (Float: 1d)</small>
+            </div>
+          </div>
+          <span class="arrow">→</span>
+          <div class="node crit">
+            <div class="node-top"><span>Task F</span><span>4d · 32h</span></div>
+            <b>6-Check Verifier</b>
+            <small>Crashed (−1d saved)</small>
+          </div>
+          <span class="arrow">→</span>
+          <div class="node crit">
+            <div class="node-top"><span>Task G</span><span>4d · 24h</span></div>
+            <b>Photo & Flow UI</b>
+            <small>Pred: F (FS)</small>
+          </div>
+          <span class="arrow">→</span>
+          <div class="node crit">
+            <div class="node-top"><span>Task H</span><span>3d · 20h</span></div>
+            <b>Pytest & E2E QA</b>
+            <small>Finish: Day 28</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <span class="tag good" style="margin-bottom:8px;">High-Trust, High-Performing Workflow</span>
+          <h3>What Helped Succeed (Solo → Real-Life Team)</h3>
+          <ul class="list good">
+            <li><i>✓</i><span><b>Clear 4-Role Architecture:</b> Splitting code by University, Wallet, Employer, and Ledger prevented conflicts.</span></li>
+            <li><i>✓</i><span><b>API Contract Freeze in Week 1:</b> Allowed React UI and Smart Contract tracks to progress in parallel.</span></li>
+            <li><i>✓</i><span><b>Automated Test Safety Net:</b> 27 automated checks verified every commit in 2 seconds.</span></li>
+            <li><i>✓</i><span><b>Weekly Friday Demo Reviews:</b> Regular feedback with our faculty guide kept scope focused.</span></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="tag warn" style="margin-bottom:8px;">Team & Execution Challenges</span>
+          <h3>Challenges Faced & How They Were Solved</h3>
+          <ul class="list">
+            <li><i>!</i><span><b>Wearing All 4 Hats Solo in 1 Month:</b> Solved by time-boxing 1 layer per week (Crypto → Ledger → UI → QA).</span></li>
+            <li><i>!</i><span><b>WebCrypto vs Python Signature Mismatch:</b> Caused a 1-day slip in Week 2; solved via an ASN.1 DER bridge.</span></li>
+            <li><i>!</i><span><b>Explaining 4 Roles to First-Time Users:</b> Solved by adding the visual flow diagram & 4-Step Guided Bar.</span></li>
+            <li><i>!</i><span><b>Large Student Photo Files:</b> Solved by adding 160×160 Canvas JPEG compression (~10 KB) in browser.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="nav-btn" onclick="goTab(0)">← 1. Charter & Scope</button>
+        <button class="nav-btn next" onclick="goTab(2)">Next: 3. Schedule, Cost & EVM →</button>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 3: SCHEDULE, COST (PLAN VS ACTUAL) & EVM + COMPRESSION          -->
+    <!-- =================================================================== -->
+    <section class="view" id="view-2">
+      <div class="card">
+        <h2>Schedule & Cost: Plan vs. Actual (1 PD = 8 Hours = ₹1,500)</h2>
+        <div class="table-wrap" style="margin-top:10px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Activity</th>
+                <th>Dependency</th>
+                <th>Plan Days</th>
+                <th>Actual Days</th>
+                <th>Plan Effort (PD / Hrs)</th>
+                <th>Actual Effort (PD / Hrs)</th>
+                <th>Plan Cost</th>
+                <th>Actual Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><b>A</b></td><td>Charter & Threat Model</td><td>—</td><td>3d</td><td>3d</td><td>3.0 PD (24h)</td><td>3.0 PD (24h)</td><td>₹4,500</td><td>₹4,500</td></tr>
+              <tr><td><b>B</b></td><td>Salted Merkle Tree Engine</td><td>A (FS)</td><td>4d</td><td>4d</td><td>4.0 PD (32h)</td><td>4.0 PD (32h)</td><td>₹6,000</td><td>₹6,000</td></tr>
+              <tr><td><b>C</b></td><td>ECDSA P-256 & WebCrypto</td><td>B (FS)</td><td>4d</td><td><b>5d (+1d)</b></td><td>3.5 PD (28h)</td><td><b>4.5 PD (36h)</b></td><td>₹5,250</td><td>₹6,750</td></tr>
+              <tr><td><b>D</b></td><td>Solidity & Local Ledger</td><td>C (FS)</td><td>5d</td><td>5d</td><td>4.0 PD (32h)</td><td>4.0 PD (32h)</td><td>₹6,000</td><td>₹6,000</td></tr>
+              <tr><td><b>E</b></td><td>React 4-Role UI</td><td>C (Fast-Track)</td><td>4d</td><td>4d</td><td>3.0 PD (24h)</td><td>3.0 PD (24h)</td><td>₹4,500</td><td>₹4,500</td></tr>
+              <tr><td><b>F</b></td><td>Flask API & 6-Check Verifier</td><td>D, E (FS)</td><td>5d</td><td><b>4d (Crashed)</b></td><td>3.5 PD (28h)</td><td><b>4.0 PD (32h)</b></td><td>₹5,250</td><td>₹6,000</td></tr>
+              <tr><td><b>G</b></td><td>Student Photo & Guided UI</td><td>F (FS)</td><td>4d</td><td>4d</td><td>2.5 PD (20h)</td><td><b>3.0 PD (24h)</b></td><td>₹3,750</td><td>₹4,500</td></tr>
+              <tr><td><b>H</b></td><td>Automated Testing & Closure</td><td>G (FS)</td><td>3d</td><td>3d</td><td>2.5 PD (20h)</td><td>2.5 PD (20h)</td><td>₹3,750</td><td>₹3,750</td></tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="3">Total (Critical Path Duration / Total Effort / Cost)</th>
+                <th>28 Days</th>
+                <th>28 Days</th>
+                <th>26.0 PD (208h)</th>
+                <th>28.0 PD (224h)</th>
+                <th>₹39,000</th>
+                <th>₹42,000</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Interactive EVM Checkpoints (SV = EV − PV, SPI = EV / PV)</h3>
+          <div class="pill-row">
+            <button class="pill-btn" onclick="showEvm(1, this)">Week 1</button>
+            <button class="pill-btn" onclick="showEvm(2, this)">Week 2 (Slip)</button>
+            <button class="pill-btn" onclick="showEvm(3, this)">Week 3 (Recovered)</button>
+            <button class="pill-btn active" onclick="showEvm(4, this)">Week 4 (Final)</button>
+          </div>
+          <div class="grid-2" id="evm-box">
+            <div class="stat"><span>Planned (PV) vs Earned (EV)</span><strong>26.0 / 26.0 PD</strong><small>₹39,000 Baseline</small></div>
+            <div class="stat"><span>Actual Cost (AC)</span><strong>28.0 PD</strong><small>₹42,000 (+2 PD Photo/Fix)</small></div>
+            <div class="stat good"><span>Schedule Variance (SV)</span><strong>0.0 PD</strong><small>SV = EV − PV (On Time)</small></div>
+            <div class="stat good"><span>Schedule Index (SPI)</span><strong>1.00</strong><small>SPI = EV / PV (CPI = 0.93)</small></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Schedule Compression & Optimization Used</h3>
+          <ul class="list good">
+            <li><i>1</i><span><b>Fast-Tracking (Saved 4 Days):</b> Ran <b>Task D (Ledger)</b> and <b>Task E (React UI)</b> in parallel instead of waiting sequentially ($32\text{d} \rightarrow 28\text{d}$).</span></li>
+            <li><i>2</i><span><b>Crashing (Recovered 1-Day Slip):</b> After Task C slipped by 1 day in Week 2 ($SPI = 0.85$), added +4h effort on <b>Task F</b> to finish it in 4 days instead of 5, restoring $SPI = 1.00$.</span></li>
+            <li><i>3</i><span><b>Single-Command Optimization:</b> Flask serves the built React app directly so demos need only <code>python backend/app.py</code>.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="nav-btn" onclick="goTab(1)">← 2. Team & Network Diagram</button>
+        <button class="nav-btn next" onclick="goTab(3)">Next: 4. Risks & Opportunities →</button>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 4: RISKS, MATERIALIZED RISKS & OPPORTUNITIES                    -->
+    <!-- =================================================================== -->
+    <section class="view" id="view-3">
+      <div class="grid-2">
+        <div class="card">
+          <span class="tag accent" style="margin-bottom:8px;">Materialized & Prevented Risks</span>
+          <h3>Identified Risks & Response Actions</h3>
+          <ul class="list">
+            <li><i>R1</i><span><b>[Materialized] WebCrypto vs Python Signature Mismatch:</b> Browser <code>r||s</code> signatures failed in Python. <br/><b>Action:</b> Built ASN.1 DER converter in <code>crypto_utils.py</code>.</span></li>
+            <li><i>R2</i><span><b>[Materialized] Student Photo Size Overflow:</b> Base64 photos exceeded the 200-char cap. <br/><b>Action:</b> Added 160×160 Canvas JPEG compression (~10 KB) + regex check.</span></li>
+            <li><i>R3</i><span><b>[Materialized] Ganache Not Installed on Demo PC:</b> <br/><b>Action:</b> Built automatic <code>LocalLedger</code> hash-chain fallback so it works anywhere.</span></li>
+            <li><i>R4</i><span><b>[Prevented] Replay & Dictionary Attacks:</b> <br/><b>Action:</b> Blocked via one-time 600s challenge nonces and 128-bit per-attribute salts.</span></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="tag good" style="margin-bottom:8px;">Positive Risks</span>
+          <h3>Opportunities Turned into Benefit</h3>
+          <ul class="list good">
+            <li><i>★</i><span><b>1. Browser-Native WebCrypto API (<code>crypto.subtle</code>):</b><br/>Instead of forcing students to install MetaMask, we used built-in browser P-256 cryptography—achieving 1-click wallet creation and JSON key backup.</span></li>
+            <li><i>★</i><span><b>2. AI APIs for SPM & Security Testing:</b><br/>Used AI tools to generate the Charter, Risk matrix, and 27 automated security assertions (<code>pytest</code> + <code>e2e_check.mjs</code>), saving ~4 person-days.</span></li>
+            <li><i>★</i><span><b>3. Interactive Visual Photo Verification:</b><br/>Turning the Student Photo into a Merkle leaf let us prove photo authenticity cryptographically without storing any image on the blockchain.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="nav-btn" onclick="goTab(2)">← 3. Schedule, Cost & EVM</button>
+        <button class="nav-btn next" onclick="goTab(4)">Next: 5. Quality & Defects →</button>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 5: QUALITY ISSUES & DEFECT LOG                                  -->
+    <!-- =================================================================== -->
+    <section class="view" id="view-4">
+      <div class="grid-3" style="margin-bottom:16px;">
+        <div class="stat good">
+          <span>Backend Unit Tests</span>
+          <strong>18 / 18 Pass</strong>
+          <small>pytest (Crypto, Merkle, Solidity)</small>
+        </div>
+        <div class="stat good">
+          <span>Live End-to-End Checks</span>
+          <strong>9 / 9 Pass</strong>
+          <small>e2e_check.mjs (Full Flow)</small>
+        </div>
+        <div class="stat accent">
+          <span>Defects Found & Fixed</span>
+          <strong>5 / 5 Closed</strong>
+          <small>Zero Open Defects</small>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Quality Issues Faced & Defect Register</h2>
+        <div class="table-wrap" style="margin-top:10px;">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>When</th>
+                <th>Severity</th>
+                <th>Defect / Quality Issue</th>
+                <th>Fix Applied</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>DEF-01</b></td>
+                <td>Week 2</td>
+                <td><span class="tag accent">Critical</span></td>
+                <td>Browser wallet signatures rejected by Python backend</td>
+                <td>Converted 64-byte WebCrypto <code>r||s</code> to ASN.1 DER in <code>crypto_utils.py</code></td>
+              </tr>
+              <tr>
+                <td><b>DEF-02</b></td>
+                <td>Week 2</td>
+                <td><span class="tag warn">Major</span></td>
+                <td>Merkle proof failed for odd number of attributes (3, 5, 7)</td>
+                <td>Duplicated odd trailing leaf in <code>merkle.py</code> level reduction</td>
+              </tr>
+              <tr>
+                <td><b>DEF-03</b></td>
+                <td>Week 3</td>
+                <td><span class="tag accent">Critical</span></td>
+                <td>Pipe character <code>|</code> in input could spoof leaf delimiter</td>
+                <td>Rejected <code>|</code> in <code>service.py</code> and added length-prefixing in <code>merkle.py</code></td>
+              </tr>
+              <tr>
+                <td><b>DEF-04</b></td>
+                <td>Week 4</td>
+                <td><span class="tag warn">Major</span></td>
+                <td>Student Photo base64 rejected by 200-char attribute limit</td>
+                <td>Added <code>IMAGE_DATA_RE</code> validator + 160×160 JPEG Canvas compression</td>
+              </tr>
+              <tr>
+                <td><b>DEF-05</b></td>
+                <td>Week 4</td>
+                <td><span class="tag">Minor</span></td>
+                <td>Users tried issuing on Tab 1 before creating a Wallet on Tab 2</td>
+                <td>Added 1-click <b>"Create & use student wallet"</b> button on University tab</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="nav-btn" onclick="goTab(3)">← 4. Risks & Opportunities</button>
+        <button class="nav-btn next" onclick="goTab(5)">Next: 6. Weekly Review & Closure →</button>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 6: WEEKLY REVIEWS (WEEKS 1-4), COMMS, CLOSURE & APPRECIATION    -->
+    <!-- =================================================================== -->
+    <section class="view" id="view-5">
+      <div class="card">
+        <h2>Weekly Progress Review with Sir (Weeks 1 to 4)</h2>
+        <p class="sub">1-month milestone progress and review questions discussed each week:</p>
+        <div class="grid-4">
+          <div class="stat">
+            <span class="tag good" style="margin-bottom:6px;">Week 1 · SPI = 1.00</span>
+            <h3 style="margin-top:4px;">Charter & Merkle</h3>
+            <small style="display:block; margin-bottom:8px;">Done: Threat model & <code>merkle.py</code> (7 PD).</small>
+            <small><b>Review Q:</b> <i>Keep all PII off-chain?</i> → Yes, only 32B root on-chain.</small>
+          </div>
+          <div class="stat">
+            <span class="tag warn" style="margin-bottom:6px;">Week 2 · SPI = 0.85</span>
+            <h3 style="margin-top:4px;">Crypto & Ledger</h3>
+            <small style="display:block; margin-bottom:8px;">Done: <code>crypto_utils.py</code>, Solidity & LocalLedger (11.5 PD).</small>
+            <small><b>Review Q:</b> <i>1d slip on DEF-01; crash Task F next week?</i> → Approved.</small>
+          </div>
+          <div class="stat">
+            <span class="tag good" style="margin-bottom:6px;">Week 3 · SPI = 1.00</span>
+            <h3 style="margin-top:4px;">4-Role UI & Verifier</h3>
+            <small style="display:block; margin-bottom:8px;">Done: Fast-tracked UI + crashed 6-check verifier (21 PD).</small>
+            <small><b>Review Q:</b> <i>Add Student Photo & Flow Guide?</i> → Approved CR-01.</small>
+          </div>
+          <div class="stat">
+            <span class="tag good" style="margin-bottom:6px;">Week 4 · SPI = 1.00</span>
+            <h3 style="margin-top:4px;">Photo, QA & Closure</h3>
+            <small style="display:block; margin-bottom:8px;">Done: Photo browse/paste, 27 tests passing (26/26 PD).</small>
+            <small><b>Final Check:</b> <i>All 15-mark SPM modules complete!</i></small>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <span class="tag navy" style="margin-bottom:8px;">Communications</span>
+          <h3>Examples Used</h3>
+          <ul class="list">
+            <li><i>1</i><span><b>Friday Demo Sync:</b> Weekly live demo + EVM check ($PV, EV, SV, SPI$) with Sir.</span></li>
+            <li><i>2</i><span><b>Change Request CR-01:</b> Week 4 approval to add Student Photo browse/paste & Guided Flow (+2 PD).</span></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="tag good" style="margin-bottom:8px;">Project Closure</span>
+          <h3>Archiving & Handover</h3>
+          <ul class="list good">
+            <li><i>✓</i><span><b>Archived:</b> Code, Solidity ABI, built UI (<code>frontend/dist</code>), and test suite.</span></li>
+            <li><i>✓</i><span><b>Transition:</b> 1-command start (<code>python backend/app.py</code>) documented in <code>README.md</code>.</span></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="tag accent" style="margin-bottom:8px;">Recognitions</span>
+          <h3>Appreciation</h3>
+          <ul class="list">
+            <li><i>★</i><span><b>Faculty Guide:</b> Thank you for weekly SPM mentorship and UX feedback.</span></li>
+            <li><i>★</i><span><b>Chukki (CU23BCA0019A):</b> Solo full-stack, crypto & smart contract delivery in 1 month.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="nav-btn" onclick="goTab(4)">← 5. Quality & Defects</button>
+        <button class="nav-btn next" onclick="goTab(0)">Back to 1. Overview ↺</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function goTab(idx) {
+      document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+      document.querySelectorAll('.view').forEach((v, i) => v.classList.toggle('active', i === idx));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    const EVM_WEEKS = {
+      1: { pv: "7.0 / 7.0 PD", pvs: "₹10,500 Baseline", ac: "7.0 PD", acs: "₹10,500", sv: "0.0 PD", svs: "On Schedule", spi: "1.00", spis: "CPI = 1.00", good: true },
+      2: { pv: "13.5 / 11.5 PD", pvs: "1-Day Slip on Task C", ac: "13.5 PD", acs: "₹20,250", sv: "−2.0 PD", svs: "Behind Schedule", spi: "0.85", spis: "Triggered Crashing", good: false },
+      3: { pv: "21.0 / 21.0 PD", pvs: "Crashed Task F (−1d)", ac: "22.0 PD", acs: "₹33,000", sv: "0.0 PD", svs: "Schedule Recovered!", spi: "1.00", spis: "CPI = 0.95", good: true },
+      4: { pv: "26.0 / 26.0 PD", pvs: "₹39,000 Baseline", ac: "28.0 PD", acs: "₹42,000 (+2 PD Photo/Fix)", sv: "0.0 PD", svs: "SV = EV − PV (On Time)", spi: "1.00", spis: "SPI = EV / PV (CPI = 0.93)", good: true }
+    };
+
+    function showEvm(w, btn) {
+      btn.parentElement.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const d = EVM_WEEKS[w];
+      const cls = d.good ? "stat good" : "stat accent";
+      document.getElementById('evm-box').innerHTML = `
+        <div class="stat"><span>Planned (PV) vs Earned (EV)</span><strong>${d.pv}</strong><small>${d.pvs}</small></div>
+        <div class="stat"><span>Actual Cost (AC)</span><strong>${d.ac}</strong><small>${d.acs}</small></div>
+        <div class="${cls}"><span>Schedule Variance (SV)</span><strong>${d.sv}</strong><small>${d.svs}</small></div>
+        <div class="${cls}"><span>Schedule Index (SPI)</span><strong>${d.spi}</strong><small>${d.spis}</small></div>
+      `;
+    }
+  </script>
+</body>
+</html>

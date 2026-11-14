@@ -1,9 +1,44 @@
 # ChainID: Blockchain-Based Identity Management
 
-A working prototype of a decentralized identity system for **degree verification**
-(BCA Cyber Security, Topic 22). A university issues a signed digital credential, the
-student keeps it in a browser wallet, and an employer can verify a single fact
-("BCA Cyber Security") without seeing the rest of the record.
+## What this project is
+
+It’s a way to prove one fact about yourself without handing over your whole record.
+
+**The usual way:** a company wants to confirm you finished your BCA degree, so you send your whole certificate or transcript, with your name, grades, date of birth, photo, and more. They see everything, and they have to trust that the document isn’t fake.
+
+**This project does it differently:**
+1. Your university gives you a digital, signed version of your degree (including your **Student Photo** and academic details).
+2. You keep it in your own wallet.
+3. When an employer asks, you share only the one fact they need, such as `"BCA Cyber Security"` (and optionally your verified photo).
+4. The employer checks it’s genuine. If anyone has changed even one word or pixel, the system catches it.
+
+A blockchain is used as a tamper-proof notebook. The university writes a fingerprint of your degree in it. No name, grades, or photos go in the notebook—only the fingerprint. Once written, it can’t be quietly changed.
+
+### The idea in one picture
+
+```
+University  --signs the degree-->  Student wallet
+     |                                  |
+     | writes fingerprint               | shares only the chosen fact
+     v                                  v
+  Ledger (blockchain)  <---checks---  Employer
+```
+
+### The four tabs
+
+The tabs are the four people or things involved. In the demo you play all four:
+
+1. **University**: This is the issuer, like your college’s records office. Here you fill in a student’s details (name, degree, year, CGPA, plus a **Student Photo** via file browse, drag-and-drop, clipboard `Ctrl+V` paste, or 1-click sample avatar) and click issue. The university digitally signs the degree and writes its fingerprint on the blockchain. It can also revoke a degree later.
+2. **Student wallet**: This is you. When you create a wallet, your browser makes a secret key that only you hold. The wallet receives your degree from the university and stores it. When an employer asks for proof, you tick only the items you want to share, and the wallet makes a proof containing just those. Everything you didn’t tick stays hidden.
+3. **Employer**: This is the person checking. They ask for a proof, you send it, and they click Verify. The system runs six checks and gives a clear answer: **VERIFIED** or **REJECTED**. A **Simulate tampering** button changes the degree to `"BCA + PhD"` so you can show the system catching a fake.
+4. **Ledger**: This is the blockchain notebook. It lists every fingerprint the university has recorded, in order. You can see a record for each issued degree and each revocation. A **Simulate ledger tampering** button edits a record behind the scenes, and the page shows the chain as broken.
+
+### Four things make it trustworthy
+
+1. **The university’s signature** proves who issued it.
+2. **The blockchain fingerprint** proves it hasn’t been altered.
+3. **Your secret key** proves it’s really yours.
+4. **A one-time request code** stops someone reusing an old proof.
 
 | Slide topic | Where it is implemented |
 |---|---|

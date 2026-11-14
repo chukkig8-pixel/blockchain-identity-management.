@@ -179,6 +179,23 @@ def test_local_ledger_detects_tampering(env):
     assert not view["valid"] and view["broken_at"] is not None
 
 
+def test_student_photo_attribute_and_tamper_detection(env):
+    _, c, w = env
+    tiny_png = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+    attrs = {**ATTRS, "Student Photo": tiny_png}
+    _, pkg = issue(c, w, attrs=attrs)
+    p = present(c, w, pkg, {"Degree", "Student Photo"})
+    res = verify(c, p)
+    assert res["valid"]
+    assert {a["key"] for a in res["attributes"]} == {"Degree", "Student Photo"}
+
+    # Tamper with 1 char of the photo base64 payload
+    p2 = present(c, w, pkg, {"Student Photo"})
+    p2["disclosed"][0]["value"] = tiny_png[:-6] + "XXXX=="
+    res2 = verify(c, p2)
+    assert not res2["valid"] and res2["tampered"]
+
+
 def test_issuer_key_file_permissions_and_encryption(tmp_path):
     import os, stat
     from crypto_utils import IssuerKey
