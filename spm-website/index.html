@@ -321,7 +321,7 @@
         <span class="uni-pill">CHANAKYA UNIVERSITY</span>
         <div>
           <h1>SPM SA Assignment (15 Marks) — ChainID</h1>
-          <p>Submitted by <b>Chukki</b> (CU23BCA0019A) · 7th Sem BCA · Built Solo in 1 Month (28 Days)</p>
+          <p>Submitted by <b>Chukki</b> (CU23BCA0019A) · 7th Sem BCA · 1-Month Project (28 Working Days / 224 Hours @ 8h/day)</p>
         </div>
       </div>
       <a href="/" onclick="if(location.protocol==='file:')this.href='http://127.0.0.1:5000'" target="_blank" class="demo-btn">Open ChainID Blockchain App ↗</a>
@@ -366,12 +366,12 @@
         <div class="stat">
           <span>Project Duration</span>
           <strong>28 Days</strong>
-          <small>1 Month (4 Weeks)</small>
+          <small>224 Working Hours (28d × 8h)</small>
         </div>
         <div class="stat">
           <span>Effort (Plan vs Actual)</span>
           <strong>26 → 28 PD</strong>
-          <small>208 hrs → 224 hrs</small>
+          <small>208 hrs Plan → 224 hrs Actual</small>
         </div>
         <div class="stat good">
           <span>Schedule (SV & SPI)</span>
@@ -385,30 +385,91 @@
         </div>
       </div>
 
+      <!-- Formal Project Charter Box -->
+      <div class="card" style="margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+          <div>
+            <h2>Project Charter — ChainID Blockchain Identity Management</h2>
+            <p class="sub" style="margin-bottom:0;">Approved charter defining project authority, objectives, stakeholders, constraints, and how blockchain was engineered using SPM methodology.</p>
+          </div>
+          <span class="tag navy">Formal Project Charter</span>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:25%;">Charter Section</th>
+                <th>Project Charter Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Project Title & Code</b></td>
+                <td><b>ChainID: Blockchain-Based Identity Management for Degree Verification</b> (Topic 22)</td>
+              </tr>
+              <tr>
+                <td><b>Project Sponsor & Lead</b></td>
+                <td><b>Sponsor:</b> Faculty Guide, Chanakya University | <b>Project Lead & Developer:</b> Chukki (CU23BCA0019A)</td>
+              </tr>
+              <tr>
+                <td><b>Business Problem & Need</b></td>
+                <td>Traditional verification requires graduates to share their entire academic record (CGPA, DOB, address) just to prove degree completion, risking privacy breaches, while physical/PDF credentials are easily forged.</td>
+              </tr>
+              <tr>
+                <td><b>Project Objectives & Success Criteria</b></td>
+                <td>
+                  1. Implement selective disclosure so candidates reveal only requested facts (e.g. Degree name + verified photo).<br/>
+                  2. Anchor only a 32-byte Merkle root on the blockchain—zero personal data or grades stored on-chain.<br/>
+                  3. Achieve 100% detection of tampered credentials in under 50ms verification latency.
+                </td>
+              </tr>
+              <tr>
+                <td><b>Key Stakeholders</b></td>
+                <td>
+                  • <b>University (Issuer):</b> Issues credentials & anchors Merkle root.<br/>
+                  • <b>Student (Holder):</b> Holds private keys locally in browser wallet & creates proofs.<br/>
+                  • <b>Employer (Verifier):</b> Sends one-time challenge nonce & runs 6 automated checks.<br/>
+                  • <b>Public / Consortium Ledger:</b> Immutable audit trail of issued/revoked roots.
+                </td>
+              </tr>
+              <tr>
+                <td><b>Timeline & Budget Baseline</b></td>
+                <td><b>Duration:</b> 28 Working Days (224 Hours) | <b>Baseline Effort:</b> 26 Person-Days (208 Hours) | <b>Budget at Completion (BAC):</b> ₹39,000 planned → ₹42,000 actual (28 PD @ ₹1,500/day).</td>
+              </tr>
+              <tr>
+                <td><b>Project Constraints & Risks</b></td>
+                <td><b>Constraints:</b> Hard 1-month timeline, zero gas bloat on-chain, browser-native crypto (no external wallet extension).<br/><b>Primary Risk:</b> Browser WebCrypto P-256 raw signature mismatch with Python ASN.1 DER (mitigated via converter bridge).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div class="grid-3">
         <div class="card">
-          <span class="tag navy" style="margin-bottom:8px;">Project Charter</span>
-          <h3>What the Project Is</h3>
+          <span class="tag navy" style="margin-bottom:8px;">SPM Methodology Applied</span>
+          <h3>How SPM Guided the Blockchain Build</h3>
           <ul class="list">
-            <li><i>1</i><span><b>Goal:</b> Prove one fact (e.g., <code>BCA Cyber Security</code> + <code>Student Photo</code>) without sharing the full transcript.</span></li>
-            <li><i>2</i><span><b>Privacy:</b> Only the 32-byte Merkle root fingerprint goes on the blockchain—zero personal data on-chain.</span></li>
-            <li><i>3</i><span><b>AI Apps Used:</b> Course AI tools used for Charter, Schedule, Cost & Risk scoring.</span></li>
+            <li><i>1</i><span><b>WBS Decomposition:</b> Broken down into 8 discrete work packages across 4 weekly milestones.</span></li>
+            <li><i>2</i><span><b>Critical Path Method (CPM):</b> Isolated critical path (A→B→C→D→F→G→H = 28d) with strict float management.</span></li>
+            <li><i>3</i><span><b>Earned Value Management (EVM):</b> Tracked weekly PV, EV, AC, SV, and SPI to catch & recover schedule slips.</span></li>
           </ul>
         </div>
 
         <div class="card">
-          <span class="tag good" style="margin-bottom:8px;">In-Scope (Built in 1 Month)</span>
-          <h3>Delivered by Chukki (Solo)</h3>
+          <span class="tag good" style="margin-bottom:8px;">In-Scope (Delivered via SPM)</span>
+          <h3>Delivered in 28 Days (224h)</h3>
           <ul class="list good">
-            <li><i>✓</i><span><b>University Tab:</b> Issue signed degrees + Student Photo (Browse, Drag-Drop, Paste).</span></li>
-            <li><i>✓</i><span><b>Student Wallet:</b> Browser P-256 private key + selective proof builder.</span></li>
-            <li><i>✓</i><span><b>Employer & Ledger:</b> 6-check verifier + Solidity & Local blockchain.</span></li>
+            <li><i>✓</i><span><b>University Tab:</b> Digitally sign degrees + Student Photo with client-side Canvas compression.</span></li>
+            <li><i>✓</i><span><b>Student Wallet:</b> Browser WebCrypto P-256 keys + selective Merkle disclosure proof builder.</span></li>
+            <li><i>✓</i><span><b>Employer & Ledger:</b> 6-check cryptographic verifier + Solidity smart contract & LocalLedger.</span></li>
           </ul>
         </div>
 
         <div class="card">
-          <span class="tag accent" style="margin-bottom:8px;">Taking It Ahead in Real Life</span>
-          <h3>Production Rollout Plan</h3>
+          <span class="tag accent" style="margin-bottom:8px;">Future Scalability</span>
+          <h3>Real-Life Rollout Plan</h3>
           <ul class="list">
             <li><i>→</i><span><b>University ERP Sync:</b> Batch-issue 1,000+ degrees from Registrar CSV exports.</span></li>
             <li><i>→</i><span><b>Polygon L2 Mainnet:</b> Anchor roots on Polygon PoS (&lt; ₹0.05 per degree).</span></li>
