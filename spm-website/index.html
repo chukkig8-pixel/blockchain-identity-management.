@@ -342,7 +342,7 @@
       </button>
       <button class="tab-btn" onclick="goTab(2)">
         <small>03 · SCHEDULE & COST</small>
-        <strong>Plan vs Actual & EVM</strong>
+        <strong>Plan vs Actual & Resources</strong>
       </button>
       <button class="tab-btn" onclick="goTab(3)">
         <small>04 · RISKS</small>
@@ -649,6 +649,86 @@
             <li><i>2</i><span><b>Crashing (Recovered 1-Day Slip):</b> After Task C slipped by 1 day in Week 2 ($SPI = 0.85$), added +4h effort on <b>Task F</b> to finish it in 4 days instead of 5, restoring $SPI = 1.00$.</span></li>
             <li><i>3</i><span><b>Single-Command Optimization:</b> Flask serves the built React app directly so demos need only <code>python backend/app.py</code>.</span></li>
           </ul>
+        </div>
+      </div>
+
+      <!-- Resource Management & Allocation Section -->
+      <div class="card" style="margin-top:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+          <div>
+            <h2>Resource Management & Allocation (SPM)</h2>
+            <p class="sub" style="margin-bottom:0;">Human, hardware, software, and financial resource allocation, leveling, and utilization across the 28-day project life cycle.</p>
+          </div>
+          <span class="tag navy">Resource Management Plan</span>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Resource Type</th>
+                <th>Resource Name / Item</th>
+                <th>Allocation & Specification</th>
+                <th>Cost / Valuation</th>
+                <th>Management Strategy & Leveling Applied</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Human Resource</b></td>
+                <td>Lead Full-Stack & Crypto Engineer (Chukki)</td>
+                <td>1 Developer · 28 Working Days (224 Hours @ 8h/day)</td>
+                <td>₹42,000 (28 PD @ ₹1,500/day)</td>
+                <td><b>Resource Leveling:</b> Avoided multi-tasking burnout by dedicating 1 week per layer (W1: Crypto, W2: Ledger, W3: UI, W4: QA).</td>
+              </tr>
+              <tr>
+                <td><b>Hardware Resource</b></td>
+                <td>Development Workstation</td>
+                <td>x64 Workstation (16 GB RAM, Core i5/i7, SSD)</td>
+                <td>Existing Academic Lab Resource</td>
+                <td>Local Ganache EVM node + Vite HMR dev server executed locally without external cloud hardware dependencies.</td>
+              </tr>
+              <tr>
+                <td><b>Blockchain Resource</b></td>
+                <td>Smart Contract Execution Environment</td>
+                <td>Ganache Local EVM + Deterministic LocalLedger (Python)</td>
+                <td>₹0 (Zero Gas Cost in Development)</td>
+                <td><b>Resource Optimization:</b> Built <code>LocalLedger</code> fallback so evaluators don't need external node RPC setups or testnet faucet funds.</td>
+              </tr>
+              <tr>
+                <td><b>Software & API Resources</b></td>
+                <td>Python, Solidity, React, WebCrypto, Render Cloud</td>
+                <td>Open-Source Stack + Free Tier Render Hosting</td>
+                <td>₹0 (Open Source / Free Tier)</td>
+                <td>Leveraged native browser <code>crypto.subtle</code> for ECDSA P-256 keys, eliminating third-party paid wallet infrastructure (no MetaMask fees).</td>
+              </tr>
+              <tr>
+                <td><b>Resource Adjustment (Crashing)</b></td>
+                <td>Overtime Allocation (Task F Verifier)</td>
+                <td>+4 Additional Hours allocated on Task F in Week 3</td>
+                <td>₹750 (0.5 PD equivalent)</td>
+                <td><b>Resource Crashing:</b> Injected focused effort to compress Task F from 5d to 4d, recovering the Week 2 schedule slip.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid-3" style="margin-top:14px;">
+          <div class="stat">
+            <span>Human Resource Utilization</span>
+            <strong>100% Focused</strong>
+            <small>224 Hours across 8 WBS Tasks</small>
+          </div>
+          <div class="stat good">
+            <span>Resource Leveling Result</span>
+            <strong>Zero Bottlenecks</strong>
+            <small>Sequential WBS + Fast-Tracking D∥E</small>
+          </div>
+          <div class="stat accent">
+            <span>Cost Efficiency (CPI)</span>
+            <strong>0.93</strong>
+            <small>Within ±10% Acceptable Threshold</small>
+          </div>
         </div>
       </div>
 
