@@ -29,6 +29,12 @@ a { color: var(--violet); }
 .pill { display: flex; gap: 10px; align-items: center; background: var(--card); border: 1px solid var(--line); padding: 6px 14px; border-radius: 99px; font-size: 0.85rem; }
 .pill b { color: var(--violet); }
 .guide-toggle { font-size: 0.85rem; padding: 7px 14px; border-radius: 99px; }
+.reset-btn { font-size: 0.85rem; padding: 7px 14px; border-radius: 99px; color: var(--muted); border-color: var(--line); }
+.reset-btn:hover { color: var(--bad); border-color: var(--bad); background: var(--bad-bg); }
+.spm-portal-btn { background: #efeaff; color: var(--violet); border: 1.5px solid #c7b9f8; padding: 7px 16px; border-radius: 99px; font-weight: 700; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all .15s ease; box-shadow: 0 2px 6px rgba(109,61,242,.1); }
+.spm-portal-btn:hover { background: var(--violet); color: #fff; border-color: var(--violet); box-shadow: 0 4px 12px rgba(109,61,242,.25); transform: translateY(-1px); }
+.guide-card-compact { padding: 16px 20px; }
+.picture-flow-compact { margin-bottom: 0; padding: 12px 14px; }
 
 /* Interactive Project Guide */
 .guide-wrap { max-width: 1120px; margin: 10px auto 0; padding: 0 24px; }

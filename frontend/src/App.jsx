@@ -73,6 +73,26 @@ export default function App() {
 
   const refreshFlow = () => setFlowTick((n) => n + 1);
 
+  const resetDemoState = (notify = false) => {
+    localStorage.removeItem(PENDING_KEY);
+    localStorage.removeItem(SHARED_KEY);
+    localStorage.removeItem("bcid.proof_tampered");
+    localStorage.removeItem("bcid.last_verify");
+    refreshFlow();
+    if (notify) {
+      alert("Demo state reset! Old shared proof and pending requests cleared.");
+    }
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("fresh")) {
+      resetDemoState(false);
+      const cleanUrl = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, document.title, cleanUrl);
+    }
+  }, []);
+
   useEffect(() => {
     api.info().then(setInfo).catch(() => setOffline(true));
   }, [flowTick]);
@@ -109,8 +129,25 @@ export default function App() {
           </div>
         </div>
         <div className="top-actions">
+          <a
+            href="/spm"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="spm-portal-btn"
+            title="Open Software Project Management Portfolio in a new tab"
+          >
+            SPM Project Portal ↗
+          </a>
+          <button
+            type="button"
+            className="ghost reset-btn"
+            onClick={() => resetDemoState(true)}
+            title="Reset temporary demo state (clears old shared proofs and requests)"
+          >
+            ↻ Reset Demo
+          </button>
           <button type="button" className="ghost guide-toggle" onClick={toggleGuide}>
-            {showGuide ? "Hide project guide" : "What this project is & How it works"}
+            {showGuide ? "Hide project guide" : "About project"}
           </button>
           {info && (
             <div className="pill" title={info.issuer_id}>
@@ -123,99 +160,62 @@ export default function App() {
 
       {showGuide && (
         <section className="guide-wrap" aria-label="What this project is">
-          <div className="guide-card">
+          <div className="guide-card guide-card-compact">
             <div className="guide-head">
               <div>
-                <span className="eyebrow">Interactive Overview</span>
-                <h2>What this project is</h2>
+                <span className="eyebrow">Project Overview</span>
+                <h2>ChainID — Decentralized Identity & Credential Verification</h2>
                 <p className="muted">
-                  It’s a way to prove one fact about yourself—such as your degree or student photo—without handing over your whole academic record.
+                  ChainID allows students to selectively prove academic credentials (like degree or photo) to employers without revealing unnecessary personal details. Issuers digitally sign facts, and tamper-proof SHA-256 fingerprints are anchored on the blockchain.
                 </p>
               </div>
-              <button type="button" className="ghost small-btn" onClick={toggleGuide}>Got it, minimize</button>
+              <button type="button" className="ghost small-btn" onClick={toggleGuide}>Close</button>
             </div>
 
-            <div className="compare-grid">
-              <div className="compare-box usual">
-                <div className="compare-tag bad-tag">The usual way</div>
-                <p>
-                  A company wants to confirm you finished your <b>BCA degree</b>, so you send your whole certificate or transcript—with your name, grades, date of birth, photo, and more. They see <em>everything</em>, and they still have to trust that the PDF isn’t fake.
-                </p>
-              </div>
-              <div className="compare-box better">
-                <div className="compare-tag good-tag">How this project does it differently</div>
-                <ol className="compact-steps">
-                  <li><b>Your university</b> gives you a digital, signed version of your degree (including your student photo).</li>
-                  <li><b>You keep it</b> in your own browser wallet.</li>
-                  <li><b>When an employer asks</b>, you share <em>only</em> the facts they need, such as <code>“BCA Cyber Security”</code> (and optionally your photo).</li>
-                  <li><b>The employer checks it’s genuine.</b> If anyone changes even one word or pixel, the system catches it.</li>
-                </ol>
-              </div>
-            </div>
-
-            <div className="picture-flow">
-              <div className="picture-title">
-                <strong>The idea in one picture</strong>
-                <span className="small muted">A blockchain is used as a tamper-proof notebook. No name, grades, or photos go in the notebook—only the fingerprint. Click any actor below to jump to its tab.</span>
-              </div>
+            <div className="picture-flow picture-flow-compact">
               <div className="flow-diagram">
                 <button type="button" className={`flow-node ${tab === "university" ? "active" : ""}`} onClick={() => setTab("university")}>
                   <span className="node-badge">1. Issuer</span>
                   <strong>University</strong>
-                  <small>Signs the degree & photo</small>
+                  <small>Signs degree & photo</small>
                 </button>
 
                 <div className="flow-arrows">
                   <div className="arrow-line">
-                    <span>signs & sends degree ➔</span>
-                  </div>
-                  <div className="arrow-line alt">
-                    <span>writes fingerprint ↘</span>
+                    <span>issue ➔</span>
                   </div>
                 </div>
 
                 <button type="button" className={`flow-node ${tab === "wallet" ? "active" : ""}`} onClick={() => setTab("wallet")}>
                   <span className="node-badge">2. Holder</span>
-                  <strong>Student wallet</strong>
-                  <small>Keeps secret key & full record</small>
+                  <strong>Student Wallet</strong>
+                  <small>Selective disclosure</small>
                 </button>
 
                 <div className="flow-arrows">
                   <div className="arrow-line">
-                    <span>shares only chosen facts ➔</span>
+                    <span>share proof ➔</span>
                   </div>
                 </div>
 
                 <button type="button" className={`flow-node ${tab === "employer" ? "active" : ""}`} onClick={() => setTab("employer")}>
                   <span className="node-badge">3. Verifier</span>
                   <strong>Employer</strong>
-                  <small>Runs 6 cryptographic checks</small>
+                  <small>6 crypto checks</small>
                 </button>
 
                 <div className="flow-arrows">
-                  <div className="arrow-line">
-                    <span>⬅ checks fingerprint</span>
+                  <div className="arrow-line alt">
+                    <span>⬅ verify</span>
                   </div>
                 </div>
 
                 <button type="button" className={`flow-node ledger-node ${tab === "ledger" ? "active" : ""}`} onClick={() => setTab("ledger")}>
                   <span className="node-badge">4. Blockchain</span>
                   <strong>Ledger</strong>
-                  <small>Tamper-proof fingerprint notebook</small>
+                  <small>Immutable hash records</small>
                 </button>
               </div>
-            </div>
-
-            <div className="trust-row">
-              {TRUST_PILLARS.map((p, idx) => (
-                <div className="trust-item" key={idx}>
-                  <span className="trust-num">{idx + 1}</span>
-                  <div>
-                    <strong>{p.title}</strong>
-                    <p className="small muted">{p.detail}</p>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </section>
